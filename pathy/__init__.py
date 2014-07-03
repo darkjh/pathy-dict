@@ -19,9 +19,19 @@ def deep_update(d, u, depth=-1):
     return d
 
 
-def flatten_dict(init, lkey=''):
+def flatten_dict(_dict, lkey=''):
+    """Flattens a nested dict
+
+    >>> flatten_dict({'a': {'b': {'c': 5}}, 'd': None})
+    {'a.b.c': 5, 'a.d': None}
+
+    :param _dict: the dict to flatten
+    :type _dict: dict
+    :returns: a flattened dict
+    :rtype: dict
+    """
     ret = {}
-    for rkey, val in init.items():
+    for rkey, val in _dict.items():
         key = lkey + rkey
         if isinstance(val, dict):
             ret.update(flatten_dict(val, key + '.'))
