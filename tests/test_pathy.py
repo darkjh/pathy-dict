@@ -80,6 +80,17 @@ class TestPathy(unittest.TestCase):
         deep = deepen_dict(_dict)
         self.assertEqual(len(deep['a']), 1)
 
+    def test_get_from_path(self):
+        _dict = {'a': {'b': {'c': 1}}}
+        result = get_from_path('a.b.c', _dict)
+        self.assertEqual(result, 1)
+
+        result = get_from_path('a', _dict)
+        self.assertEqual(result, {'b': {'c': 1}})
+
+        # KeyError if the path is not valid
+        self.assertRaises(KeyError, get_from_path, 'wrong.path', _dict)
+
     def test_update_dict(self):
         _dict = {'a': {'b': {'c': 1}}, 'k': 3}
         update = {'a': {'e': 2}, 'k': 5}

@@ -60,7 +60,7 @@ def deepen_dict(_dict, split_key='.'):
     return deep
 
 
-def get_subdict_from_path(path, dict):
+def get_from_path(path, _dict):
     """Get the corresponding sub-dict or value from a dict by a
     dot separated path
 
@@ -68,20 +68,26 @@ def get_subdict_from_path(path, dict):
         path 'a.b.c' will return the value 1. With path 'a.b' will
         return the sub dict {'c': 1}
 
+    >>> get_from_path('a.b.c', {'a': {'b': {'c'}}})
+    1
+    >>> get_from_path('a.b', {'a': {'b': {'c'}}})
+    {'c': 1}
+
     :param path: a valid dot separated path
+    :type path: str
     :returns: sub dict or value
     """
-    return reduce(lambda d, key: d[key], path.split('.'), dict)
+    return reduce(lambda d, key: d[key], path.split('.'), _dict)
 
 
-def path_in_dict(path, dict):
+def path_in_dict(path, _dict):
     """Check whether a path is valid in a dict
 
     :param path: dot separated path to check
     """
     res = True
     try:
-        get_subdict_from_path(path, dict)
+        get_from_path(path, _dict)
     except KeyError:
         res = False
     return res
