@@ -67,10 +67,18 @@ class TestPathy(unittest.TestCase):
         _dict = {'a.b.c': 100}
         self.assertDictEqual(flatten_dict(_dict), _dict)
 
-    def test_deep_dict(self):
+    def test_deepen_dict(self):
         _dict = {'a.b.d': 100, 'a.b.f': 20}
         expected = {'a': {'b': {'d': 100, 'f': 20}}}
-        self.assertDictEqual(deep_dict(_dict), expected)
+        self.assertDictEqual(deepen_dict(_dict), expected)
+
+        # conflict path will be overwritten
+        # it could be {'a': {'b': {'c': None}}}
+        # or, {'a': {'b': 1}}
+        # depending on the iteration order
+        _dict = {'a.b.c': None, 'a.b': 1}
+        deep = deepen_dict(_dict)
+        self.assertEqual(len(deep['a']), 1)
 
     def test_update_dict(self):
         _dict = {'a': {'b': {'c': 1}}, 'k': 3}

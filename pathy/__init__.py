@@ -40,14 +40,24 @@ def flatten_dict(_dict, lkey=''):
     return ret
 
 
-def deep_dict(d, split_key='.'):
+def deepen_dict(_dict, split_key='.'):
+    """Deepens a flat dict by splitting its key
+
+    >>> deepen_dict({"a.b.c": 1, "a.b.d": 2})
+    {'a': {'b': {'c': 1, 'd': 2}}}
+
+    :param _dict: the flat dict to transform
+    :type _dict: dict
+    :param split_key: separator of dict path, defaults to `.`
+    :type split_key: str
+    :returns: a deepened dict
+    :rtype: dict
     """
-    Transform a flat dict {"a.b": 1, "b.c": 2} to a deep dict: {"a": {"b": 1 }}, "b": {"c": 2}}
-    """
-    new_d = {}
-    for k, v in d.iteritems():
-        deep_update(new_d, reduce(lambda x, y: {y: x}, reversed(k.split('.') + [v])))
-    return new_d
+    deep = {}
+    for k, v in _dict.iteritems():
+        deep_update(deep, reduce(lambda x, y: {y: x},
+                                 reversed(k.split(split_key) + [v])))
+    return deep
 
 
 def get_subdict_from_path(path, dict):
