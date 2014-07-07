@@ -83,12 +83,21 @@ def get_from_path(path, _dict):
 def path_in_dict(path, _dict):
     """Check whether a path is valid in a dict
 
+    Returns the sub dict if the path is valid, `False` if it's not
+    It may be more useful than `get_from_path` as it's generally
+    better to check the key existence before accessing it
+
+    >>> path_in_dict('a.b', {'a': {'b': 1}})
+    1
+    >>> path_in_dict('wrong.path', {'a': {'b': 1}})
+    False
+
     :param path: dot separated path to check
+    :param _dict: dict
     """
-    res = True
     try:
-        get_from_path(path, _dict)
-    except KeyError:
+        res = get_from_path(path, _dict)
+    except (KeyError, TypeError):
         res = False
     return res
 

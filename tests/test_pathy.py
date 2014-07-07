@@ -90,6 +90,17 @@ class TestPathy(unittest.TestCase):
 
         # KeyError if the path is not valid
         self.assertRaises(KeyError, get_from_path, 'wrong.path', _dict)
+        self.assertRaises(KeyError, get_from_path, 'a.b.c.d.e', _dict)
+
+    def test_path_in_dict(self):
+        _dict = {'a': {'b': {'c': 1}}}
+        self.assertEqual(path_in_dict('a.b.c', _dict), 1)
+
+        self.assertEqual(path_in_dict('a.b', _dict), {'c': 1})
+
+        self.assertFalse(path_in_dict('a.k', _dict))
+        self.assertFalse(path_in_dict('a.b.c.d', _dict))
+
 
     def test_update_dict(self):
         _dict = {'a': {'b': {'c': 1}}, 'k': 3}
